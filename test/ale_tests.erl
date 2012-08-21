@@ -23,7 +23,7 @@ update2() ->
 %%      LEFT JOIN table2 ON table1.id = tabke2.id WHERE table2.id IS NULL
 left_join() ->
     [T1 || T1 <- table(table1), 
-           T2 <- join_table(table2), T1.id == T2.id, T2.id =:= undefined].
+           T2 <- table(table2), all(T1), T1.id == T2.id, T2.id =:= undefined].
 
 %% SELECT student.name COUNT(*) FROM student, course 
 %%     WHERE student.id = course.student_id GROUP BY student.name;
@@ -64,7 +64,6 @@ limit() ->
 %%    LEFT JOIN client ON client.group_id = `group`.id
 %%        GROUP BY `group`.id HAVING count(client.id) > 3;
 %%
-%% Use having with:
 %%  AVG() - Returns the average value
 %%  COUNT() - Returns the number of rows
 %%  FIRST() - Returns the first value
@@ -75,7 +74,8 @@ limit() ->
 having() ->
     [ {G.name, G.id, CC} 
         || G <- table(group), 
-           C <- join_table(client), 
+           C <- table(client), 
+           all(C),
            CC = count(C.id),
            group(G.id), C.group_id == G.id, CC > 3].
 
