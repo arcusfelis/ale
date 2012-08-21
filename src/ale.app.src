@@ -1,0 +1,7 @@
+{application, ale,
+ [
+  {description, ""},
+  {vsn, git},
+  {registered, []},
+  {env, []}
+ ]}.
